@@ -17,6 +17,8 @@ const d = post.data;
 const moneyPage =
   d.product === 'shheben'
     ? { name: 'Щебень', slug: 'shheben' }
+    : d.product === 'beton'
+    ? { name: 'Бетон', slug: 'beton' }
     : products.find((p) => p.key === d.product) ?? { name: 'Каталог', slug: '' };
 
 const all = await getCollection('blog');

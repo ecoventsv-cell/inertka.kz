@@ -69,3 +69,24 @@ export const terms = [
 ];
 
 export const fmt = (n: number) => n.toLocaleString('ru-RU').replace(/ /g, ' ');
+
+// Бетон: цена за м³ с НДС (прайс поставщика + 1 500 ₸ наценки, решение владельца 01.11.2026).
+export const beton = [
+  { cls: 'В7,5', mark: 'М100', price: 29500 },
+  { cls: 'В10', mark: 'М150', price: 30500 },
+  { cls: 'В15', mark: 'М200', price: 31500 },
+  { cls: 'В20', mark: 'М250', price: 32500 },
+  { cls: 'В22,5', mark: 'М300', price: 34000 },
+  { cls: 'В25', mark: 'М350', price: 35000 },
+  { cls: 'В30', mark: 'М400', price: 37500 },
+  { cls: 'В35', mark: 'М450', price: 39500 },
+];
+export const peskobeton = [
+  { cls: 'В7,5', mark: 'М100', price: 28500 },
+  { cls: 'В10', mark: 'М150', price: 30000 },
+  { cls: 'В15', mark: 'М200', price: 30500 },
+  { cls: 'В20', mark: 'М250', price: 32500 },
+  { cls: 'В22,5', mark: 'М300', price: 33500 },
+];
+export const sulfatePlus = 500; // сульфатостойкий: +500 ₸/м³
+export const betonDelivery = { tripUpTo8: 40000, perM3From8: 5000 }; // по городу, с НДС

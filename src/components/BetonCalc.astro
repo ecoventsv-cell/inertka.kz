@@ -1,0 +1,48 @@
+---
+import { beton, peskobeton, sulfatePlus, betonDelivery, site } from '../data/site';
+interface Props { mark?: string }
+const { mark = 'М200' } = Astro.props;
+---
+<div class="calc" id="bcalc">
+  <h3 style="margin-top:0">Калькулятор бетона с доставкой</h3>
+  <label for="bc-t">Вид</label>
+  <select id="bc-t">
+    <option value="b">Бетон (с щебнем)</option>
+    <option value="p">Пескобетон</option>
+  </select>
+  <label for="bc-m">Марка</label>
+  <select id="bc-m"></select>
+  <label for="bc-v">Объём, м³</label>
+  <input id="bc-v" type="number" min="1" step="0.5" value="10" inputmode="decimal" />
+  <label style="font-weight:400"><input id="bc-s" type="checkbox" style="width:auto" /> Сульфатостойкий (+{sulfatePlus} ₸/м³)</label>
+  <div class="res" id="bc-r"></div>
+  <div class="btns"><a class="btn btn-wa" id="bc-wa" href="#" rel="nofollow" target="_blank">Заказать в WhatsApp</a></div>
+</div>
+<script define:vars={{ beton, peskobeton, sulfatePlus, d: betonDelivery, wa: site.whatsapp, mark }}>
+  const $ = (id) => document.getElementById(id);
+  const f = (n) => Math.round(n).toLocaleString('ru-RU');
+  function fill() {
+    const list = $('bc-t').value === 'b' ? beton : peskobeton;
+    const prev = $('bc-m').value || mark;
+    $('bc-m').innerHTML = list.map((x) => `<option value="${x.price}" data-m="${x.mark}">${x.mark} (${x.cls}) — ${f(x.price)} ₸/м³</option>`).join('');
+    const i = list.findIndex((x) => x.mark === prev);
+    $('bc-m').selectedIndex = i >= 0 ? i : 0;
+  }
+  function upd() {
+    const v = Math.max(0, +$('bc-v').value || 0);
+    const opt = $('bc-m').selectedOptions[0];
+    const price = +opt.value + ($('bc-s').checked ? sulfatePlus : 0);
+    const name = ($('bc-t').value === 'b' ? 'Бетон ' : 'Пескобетон ') + opt.dataset.m + ($('bc-s').checked ? ' сульфатостойкий' : '');
+    const mat = price * v;
+    const dlv = v < 8 ? d.tripUpTo8 : v * d.perM3From8;
+    res(name, v, mat, dlv);
+  }
+  function res(name, v, mat, dlv) {
+    $('bc-r').innerHTML = `${name}, ${v} м³<br>Бетон: ${f(mat)} ₸<br>Доставка по Астане: ${f(dlv)} ₸<br>Итого: <b>${f(mat + dlv)} ₸</b> с НДС`;
+    $('bc-wa').href = `https://wa.me/${wa}?text=` + encodeURIComponent(`Здравствуйте! Нужен ${name.toLowerCase()}, ${v} м³. Адрес и дата: `);
+  }
+  $('bc-t').addEventListener('change', () => { fill(); upd(); });
+  ['bc-m', 'bc-v', 'bc-s'].forEach((id) => $(id).addEventListener('input', upd));
+  $('bc-m').addEventListener('change', upd);
+  fill(); upd();
+</script>
