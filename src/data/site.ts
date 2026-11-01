@@ -53,6 +53,16 @@ export const products: Product[] = [
     img: '/img/shheben-20-40.webp', w: 264, h: 178,
   },
   {
+    slug: 'shheben/5-20',
+    key: 'shheben-5-20',
+    name: 'Щебень 5-20',
+    h1: 'Щебень 5-20 в Астане с доставкой',
+    price: 7500,
+    unit: 'т',
+    short: 'Мелкий щебень для бетона перекрытий и стен, отмостки, дорожек и ЖБИ.',
+    img: '/img/shheben-5-20.webp', w: 264, h: 174,
+  },
+  {
     slug: 'shheben/0-50',
     key: 'shheben-0-50',
     name: 'Щебень 0-50',

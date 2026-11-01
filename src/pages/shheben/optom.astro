@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import Calc from '../../components/Calc.astro';
+import Faq from '../../components/Faq.astro';
+import Cta from '../../components/Cta.astro';
+import Trust from '../../components/Trust.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { products, site, waLink, fmt } from '../../data/site';
+import { faqSchema, crumbsSchema } from '../../data/schema';
+
+const items = products.filter((p) => p.key.startsWith('shheben'));
+const faq = [
+  { q: 'Какие цены на щебень оптом в Астане?', a: 'Базовые цены с НДС: 20-40 и 5-20 — 7 500 ₸/т, 0-50 — 7 000 ₸/т. На крупные объёмы скидка обсуждается индивидуально.' },
+  { q: 'С какого объёма доставка бесплатная?', a: 'От 100 тонн доставка по всей Астане входит в цену.' },
+  { q: 'Можно поставлять по графику?', a: 'Да. Возим рейсами по согласованному графику: каждый день, через день или под этапы работ.' },
+  { q: 'Какие документы?', a: 'Договор поставки, счёт-фактура с НДС, накладные на каждую машину, сертификат на щебень.' },
+];
+const crumbs = [{ name: 'Главная', path: '/' }, { name: 'Щебень', path: '/shheben/' }, { name: 'Оптом', path: '/shheben/optom/' }];
+const waText = 'Здравствуйте! Нужен щебень оптом: фракция …, объём … т, график поставки …, адрес …';
+---
+<Base
+  title="Щебень оптом в Астане — от 7 000 ₸/т с НДС, скидки на объём | Инертка"
+  description="Оптовые поставки щебня в Астане: 20-40, 5-20, 0-50 от 7 000 ₸/т с НДС. От 100 т доставка включена, поставки по графику, скидки на объём, договор и сертификаты."
+  schema={[faqSchema(faq), crumbsSchema(crumbs)]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs"><a href="/">Главная</a> › <a href="/shheben/">Щебень</a> › </nav>
+        <h1>Щебень оптом в Астане</h1>
+        <p class="hero-price">от 7 000 ₸ <small>за тонну с НДС</small></p>
+        <p>Поставки для строительных компаний, дорожников и производств. От 100 тонн доставка по Астане включена, на крупные объёмы — скидка.</p>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Запросить оптовую цену</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="/img/dostavka-samosval.webp" width="476" height="470" alt="Самосвал выгружает щебень" fetchpriority="high" />
+        <div class="badge"><b>скидка</b>на крупные объёмы</div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <Trust />
+    <div class="grid">
+      {items.map((p) => (
+        <ProductCard href={`/${p.slug}/`} img={p.img} w={p.w} h={p.h} name={p.name} price={fmt(p.price!)} unit="за тонну" text={p.short} />
+      ))}
+    </div>
+    <div class="prose">
+      <h2>Условия для оптовых покупателей</h2>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Цена</td><td>с НДС, за тонну</td></tr>
+          <tr><td>Доставка по Астане</td><td>от 100 т — включена в цену</td></tr>
+          <tr><td>Скидка</td><td>на крупные объёмы, индивидуально</td></tr>
+          <tr><td>График</td><td>рейсами под темп работ на объекте</td></tr>
+          <tr><td>Оплата</td><td>перечислением по договору</td></tr>
+          <tr><td>Документы</td><td>договор, счёт-фактура, накладные, сертификат</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Кому мы поставляем</h2>
+      <ul>
+        <li><b>Строительные компании</b> — щебень на фундаменты, подушки, бетон, благоустройство.</li>
+        <li><b>Дорожные подрядчики</b> — <a href="/shheben/0-50/">щебень 0-50</a> на основания, 20-40 и 5-20 на расклинцовку.</li>
+        <li><b>Производства ЖБИ и плитки</b> — <a href="/shheben/5-20/">щебень 5-20</a> регулярными поставками.</li>
+        <li><b>Растворо-бетонные узлы</b> — 20-40 и 5-20 для бетона.</li>
+        <li><b>Застройщики</b> — комплексно: щебень, <a href="/dresva/">дресва</a> на засыпку и <a href="/beton/">бетон</a>.</li>
+      </ul>
+
+      <h2>Пример: дорожный объект</h2>
+      <p>Проезд 500 м × 6 м, основание 30 см из щебня 0-50.</p>
+      <ol>
+        <li>Объём с уплотнением: 500 × 6 × 0,3 × 1,25 = 1 125 м³.</li>
+        <li>В тоннах: 1 125 × 1,55 ≈ 1 744 т.</li>
+        <li>По базовой цене: 1 744 × 7 000 = <b>12 208 000 ₸ с НДС</b>, доставка включена.</li>
+        <li>На таком объёме действует скидка — точную цену назовёт менеджер.</li>
+      </ol>
+      <p>Это около 60–70 самосвалов. Возим по графику, чтобы техника на объекте успевала разравнивать и укатывать.</p>
+
+      <h2>Как начать работу</h2>
+      <ol class="steps">
+        <li><b>Запрос</b><span>Фракции, объём, адрес и сроки — в WhatsApp или по телефону.</span></li>
+        <li><b>Цена и договор</b><span>Оптовая цена, график поставки, договор и счёт с НДС.</span></li>
+        <li><b>Поставки</b><span>Машины по графику, документы на каждую.</span></li>
+      </ol>
+
+      <Calc selected="shheben-20-40" />
+      <Cta text="Напишите объём и график — пришлём оптовую цену." wa={waText} />
+      <Faq items={faq} />
+    </div>
+  </div>
+</Base>

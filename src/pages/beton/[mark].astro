@@ -1,0 +1,94 @@
+---
+import Base from '../../layouts/Base.astro';
+import BetonCalc from '../../components/BetonCalc.astro';
+import Faq from '../../components/Faq.astro';
+import Cta from '../../components/Cta.astro';
+import Trust from '../../components/Trust.astro';
+import { markPages, type MarkPage } from '../../data/marks';
+import { beton, betonDelivery, sulfatePlus, site, waLink, fmt } from '../../data/site';
+import { faqSchema, crumbsSchema } from '../../data/schema';
+
+export function getStaticPaths() {
+  return markPages.map((m) => ({ params: { mark: m.slug }, props: { m } }));
+}
+const { m } = Astro.props as { m: MarkPage };
+const row = beton.find((x) => x.mark === m.mark)!;
+const nb = m.neighbors.map((n) => beton.find((x) => x.mark === n)!);
+const crumbs = [
+  { name: 'Главная', path: '/' },
+  { name: 'Бетон', path: '/beton/' },
+  { name: m.mark, path: `/beton/${m.slug}/` },
+];
+const title = `Бетон ${m.mark} в Астане — ${fmt(row.price)} ₸/м³ с НДС, доставка | Инертка`;
+const description = `Бетон ${m.mark} (${row.cls}) в Астане: ${fmt(row.price)} ₸ за м³ с НДС. Доставка миксером по городу. Для ${m.use}. Оплата перечислением.`;
+const waText = `Здравствуйте! Нужен бетон ${m.mark}, объём: … м³, адрес и дата: …`;
+const product = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: `Бетон ${m.mark} (${row.cls})`,
+  description,
+  image: `${site.url}/img/beton.webp`,
+  brand: { '@type': 'Brand', name: site.name },
+  offers: {
+    '@type': 'Offer',
+    price: row.price,
+    priceCurrency: 'KZT',
+    availability: 'https://schema.org/InStock',
+    url: `${site.url}/beton/${m.slug}/`,
+    seller: { '@id': `${site.url}/#org` },
+  },
+};
+const others = markPages.filter((x) => x.slug !== m.slug);
+---
+<Base title={title} description={description} schema={[product, faqSchema(m.faq), crumbsSchema(crumbs)]}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs"><a href="/">Главная</a> › <a href="/beton/">Бетон</a> › </nav>
+        <h1>Бетон {m.mark} в Астане с доставкой</h1>
+        <p class="hero-price">{fmt(row.price)} ₸ <small>за м³ с НДС · класс {row.cls}</small></p>
+        <p>{m.lead}</p>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="/img/beton.webp" width="516" height="560" alt={`Бетон ${m.mark}`} fetchpriority="high" />
+        <div class="badge"><b>{m.mark} · {row.cls}</b>доставка миксером по Астане</div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <Trust />
+    <div class="prose">
+      <h2>Цена бетона {m.mark}</h2>
+      <table class="price-table">
+        <tbody>
+          <tr><td>Бетон {m.mark} ({row.cls})</td><td class="p">{fmt(row.price)} ₸/м³</td></tr>
+          <tr><td>Сульфатостойкий {m.mark}</td><td class="p">{fmt(row.price + sulfatePlus)} ₸/м³</td></tr>
+          <tr><td>Доставка до 8 м³</td><td class="p">{fmt(betonDelivery.tripUpTo8)} ₸ за рейс</td></tr>
+          <tr><td>Доставка от 8 м³</td><td class="p">{fmt(betonDelivery.perM3From8)} ₸/м³</td></tr>
+        </tbody>
+      </table>
+      <p>Все цены с НДС. Оплата перечислением, документы на каждую поставку.</p>
+      <BetonCalc mark={m.mark} />
+      <Fragment set:html={m.body} />
+      <h2>Соседние марки</h2>
+      <table>
+        <thead><tr><th>Марка</th><th>Класс</th><th>Цена за м³</th></tr></thead>
+        <tbody>
+          {nb.map((x) => {
+            const page = markPages.find((p) => p.mark === x.mark);
+            return <tr><td>{page ? <a href={`/beton/${page.slug}/`}>{x.mark}</a> : x.mark}</td><td>{x.cls}</td><td>{fmt(x.price)} ₸</td></tr>;
+          })}
+        </tbody>
+      </table>
+      <p>Все марки от М100 до М450 и пескобетон — на странице <a href="/beton/">бетон в Астане</a>.</p>
+      <Cta wa={waText} />
+      <Faq items={m.faq} />
+      <h2>Другие марки</h2>
+      <ul>{others.map((x) => <li><a href={`/beton/${x.slug}/`}>Бетон {x.mark}</a></li>)}<li><a href="/beton/peskobeton/">Пескобетон</a></li></ul>
+    </div>
+  </div>
+</Base>

@@ -1,7 +1,7 @@
 ---
 import { beton, peskobeton, sulfatePlus, betonDelivery, site } from '../data/site';
-interface Props { mark?: string }
-const { mark = 'М200' } = Astro.props;
+interface Props { mark?: string; type?: 'b' | 'p' }
+const { mark = 'М200', type = 'b' } = Astro.props;
 ---
 <div class="calc" id="bcalc">
   <h3 style="margin-top:0">Калькулятор бетона с доставкой</h3>
@@ -18,7 +18,7 @@ const { mark = 'М200' } = Astro.props;
   <div class="res" id="bc-r"></div>
   <div class="btns"><a class="btn btn-wa" id="bc-wa" href="#" rel="nofollow" target="_blank">Заказать в WhatsApp</a></div>
 </div>
-<script define:vars={{ beton, peskobeton, sulfatePlus, d: betonDelivery, wa: site.whatsapp, mark }}>
+<script define:vars={{ beton, peskobeton, sulfatePlus, d: betonDelivery, wa: site.whatsapp, mark, type }}>
   const $ = (id) => document.getElementById(id);
   const f = (n) => Math.round(n).toLocaleString('ru-RU');
   function fill() {
@@ -44,5 +44,6 @@ const { mark = 'М200' } = Astro.props;
   $('bc-t').addEventListener('change', () => { fill(); upd(); });
   ['bc-m', 'bc-v', 'bc-s'].forEach((id) => $(id).addEventListener('input', upd));
   $('bc-m').addEventListener('change', upd);
+  $('bc-t').value = type;
   fill(); upd();
 </script>

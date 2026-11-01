@@ -6,6 +6,8 @@ import Cta from '../components/Cta.astro';
 import { getCollection } from 'astro:content';
 import { beton, peskobeton, sulfatePlus, betonDelivery, site, waLink, fmt } from '../data/site';
 import { faqSchema, crumbsSchema } from '../data/schema';
+import { markPages } from '../data/marks';
+const markLink = (m: string) => markPages.find((x) => x.mark === m);
 
 const faq = [
   { q: 'Сколько стоит куб бетона в Астане?', a: `От ${fmt(beton[0].price)} ₸ за м³ (М100) до ${fmt(beton.at(-1)!.price)} ₸ (М450). Ходовой М300 — ${fmt(beton[4].price)} ₸/м³. Цены с НДС.` },
@@ -36,15 +38,15 @@ const posts = (await getCollection('blog')).filter((x) => x.data.product === 'be
 const waText = 'Здравствуйте! Нужен бетон, марка: …, объём: … м³, адрес: …';
 ---
 <Base
-  title="Бетон в Астане — от 29 500 ₸/м³ с НДС, доставка миксером | Инертка"
-  description="Товарный бетон М100–М450 и пескобетон в Астане. М200 — 31 500 ₸/м³, М300 — 34 000 ₸/м³ с НДС. Доставка миксером по городу. Оплата перечислением."
+  title="Купить бетон в Астане — цена за куб от 29 500 ₸, доставка | Инертка"
+  description="Товарный бетон М100–М450 и пескобетон в Астане: цена за куб с НДС. М200 — 31 500 ₸/м³, М300 — 34 000 ₸/м³ с НДС. Доставка миксером по городу. Оплата перечислением."
   schema={[offers, faqSchema(faq), crumbsSchema(crumbs)]}
 >
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
         <nav class="crumbs"><a href="/">Главная</a> › </nav>
-        <h1>Бетон в Астане с доставкой миксером</h1>
+        <h1>Товарный бетон в Астане с доставкой миксером</h1>
         <p class="hero-price">от {fmt(beton[0].price)} ₸ <small>за м³ с НДС</small></p>
         <p>Товарный бетон от М100 до М450 и пескобетон. Привозим миксером на объект по всей Астане. Оплата перечислением.</p>
         <div class="btns">
@@ -62,11 +64,12 @@ const waText = 'Здравствуйте! Нужен бетон, марка: …
     <h2>Цены на бетон</h2>
     <table class="price-table">
       <thead><tr><th>Марка</th><th>Класс</th><th>Цена за м³ с НДС</th></tr></thead>
-      <tbody>{beton.map((x) => <tr><td>{x.mark}</td><td>{x.cls}</td><td class="p">{fmt(x.price)} ₸</td></tr>)}</tbody>
+      <tbody>{beton.map((x) => <tr><td>{markLink(x.mark) ? <a href={`/beton/${markLink(x.mark)!.slug}/`}>{x.mark}</a> : x.mark}</td><td>{x.cls}</td><td class="p">{fmt(x.price)} ₸</td></tr>)}</tbody>
     </table>
     <p>Сульфатостойкий бетон — плюс {sulfatePlus} ₸ к цене за куб.</p>
 
     <h2>Цены на пескобетон</h2>
+    <p>Подробнее о марках и применении — на странице <a href="/beton/peskobeton/">пескобетон в Астане</a>.</p>
     <figure class="figure"><img src="/img/peskobeton.webp" width="560" height="369" alt="Пескобетон при выгрузке" loading="lazy" /></figure>
     <table class="price-table">
       <thead><tr><th>Марка</th><th>Класс</th><th>Цена за м³ с НДС</th></tr></thead>

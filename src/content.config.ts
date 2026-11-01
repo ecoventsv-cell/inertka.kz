@@ -8,7 +8,7 @@ const blog = defineCollection({
     title: z.string(),
     h1: z.string(),
     description: z.string(),
-    product: z.enum(['dresva', 'shheben-20-40', 'shheben-0-50', 'shheben', 'beton']),
+    product: z.enum(['dresva', 'shheben-20-40', 'shheben-5-20', 'shheben-0-50', 'shheben', 'beton']),
     kind: z.enum(['kommercheskaya', 'ekspertnaya', 'sravnenie']),
     date: z.string(),
     faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),

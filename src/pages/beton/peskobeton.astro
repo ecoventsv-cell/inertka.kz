@@ -1,0 +1,113 @@
+---
+import Base from '../../layouts/Base.astro';
+import BetonCalc from '../../components/BetonCalc.astro';
+import Faq from '../../components/Faq.astro';
+import Cta from '../../components/Cta.astro';
+import Trust from '../../components/Trust.astro';
+import { peskobeton, beton, betonDelivery, site, waLink, fmt } from '../../data/site';
+import { faqSchema, crumbsSchema } from '../../data/schema';
+
+const faq = [
+  { q: 'Сколько стоит пескобетон в Астане?', a: `От ${fmt(peskobeton[0].price)} ₸ за м³ (М100) до ${fmt(peskobeton.at(-1)!.price)} ₸ (М300), с НДС. Доставка миксером — 40 000 ₸ за рейс до 8 м³ или 5 000 ₸ за м³ от 8 м³.` },
+  { q: 'Чем пескобетон отличается от бетона?', a: 'В нём нет щебня — только песок, цемент и вода. Он для стяжек, тонких слоёв и подливок. Для фундаментов берут обычный бетон.' },
+  { q: 'Какую марку пескобетона брать для стяжки?', a: 'Для стяжки пола в доме — М150–М200. Для гаража и полов под нагрузку — М250–М300.' },
+  { q: 'Можно ли залить пескобетоном фундамент?', a: 'Не рекомендуем: без щебня усадка больше, выше риск трещин. Для фундамента нужен бетон М250–М300.' },
+];
+const crumbs = [{ name: 'Главная', path: '/' }, { name: 'Бетон', path: '/beton/' }, { name: 'Пескобетон', path: '/beton/peskobeton/' }];
+const product = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Пескобетон товарный',
+  description: 'Пескобетон М100–М300 с доставкой миксером по Астане. Цены за м³ с НДС.',
+  image: `${site.url}/img/peskobeton.webp`,
+  brand: { '@type': 'Brand', name: site.name },
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'KZT',
+    lowPrice: peskobeton[0].price,
+    highPrice: peskobeton.at(-1)!.price,
+    offerCount: peskobeton.length,
+    availability: 'https://schema.org/InStock',
+  },
+};
+const waText = 'Здравствуйте! Нужен пескобетон, марка: …, объём: … м³, адрес и дата: …';
+const m200 = peskobeton.find((x) => x.mark === 'М200')!;
+---
+<Base
+  title={`Пескобетон в Астане — от ${fmt(peskobeton[0].price)} ₸/м³ с НДС, доставка | Инертка`}
+  description={`Товарный пескобетон М100–М300 в Астане: от ${fmt(peskobeton[0].price)} ₸ за м³ с НДС. Для стяжек, полов, подливок. Доставка миксером по городу, оплата перечислением.`}
+  schema={[product, faqSchema(faq), crumbsSchema(crumbs)]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs"><a href="/">Главная</a> › <a href="/beton/">Бетон</a> › </nav>
+        <h1>Пескобетон в Астане с доставкой миксером</h1>
+        <p class="hero-price">от {fmt(peskobeton[0].price)} ₸ <small>за м³ с НДС</small></p>
+        <p>Товарный пескобетон М100–М300 для стяжек, полов, подливок и тонких конструкций. Привозим миксером по всей Астане.</p>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo wide">
+        <img src="/img/peskobeton.webp" width="560" height="369" alt="Пескобетон при выгрузке" fetchpriority="high" />
+        <div class="badge"><b>М100–М300</b>для стяжек и полов</div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <Trust />
+    <div class="prose">
+      <h2>Цены на пескобетон</h2>
+      <table class="price-table">
+        <thead><tr><th>Марка</th><th>Класс</th><th>Цена за м³ с НДС</th></tr></thead>
+        <tbody>{peskobeton.map((x) => <tr><td>{x.mark}</td><td>{x.cls}</td><td class="p">{fmt(x.price)} ₸</td></tr>)}</tbody>
+      </table>
+      <p>Доставка по Астане: до 8 м³ — {fmt(betonDelivery.tripUpTo8)} ₸ за рейс, от 8 м³ — {fmt(betonDelivery.perM3From8)} ₸ за м³. Цены с НДС.</p>
+      <BetonCalc type="p" />
+
+      <h2>Что такое пескобетон</h2>
+      <p>
+        Это бетон без щебня: цемент, песок и вода. Смесь мелкая и однородная, поэтому ровно ложится тонким слоем,
+        затекает в узкие места и даёт гладкую поверхность. Привозим его готовым, миксером, как обычный бетон.
+      </p>
+
+      <h2>Где применяют</h2>
+      <ul>
+        <li><b>Стяжка пола</b> по плитам перекрытия и по грунту, толщиной 3–8 см.</li>
+        <li><b>Полы</b> в гаражах, складах, подсобных помещениях.</li>
+        <li><b>Подливка</b> под оборудование, заполнение пустот и щелей.</li>
+        <li><b>Тонкие конструкции</b>: подоконные плиты, перемычки малой толщины.</li>
+        <li><b>Выравнивание</b> оснований перед укладкой покрытий.</li>
+      </ul>
+
+      <h2>Какую марку выбрать</h2>
+      <table>
+        <thead><tr><th>Задача</th><th>Марка</th></tr></thead>
+        <tbody>
+          <tr><td>Подготовка, выравнивание</td><td>М100–М150</td></tr>
+          <tr><td>Стяжка пола в жилом доме</td><td>М150–М200</td></tr>
+          <tr><td>Пол в гараже, мастерской</td><td>М250</td></tr>
+          <tr><td>Полы под нагрузку, склад</td><td>М300</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Пример расчёта: стяжка в доме</h2>
+      <p>Площадь 120 м², стяжка 5 см.<br>
+        Объём: 120 × 0,05 = 6 м³, с запасом — 6,3 м³.<br>
+        Пескобетон М200: 6,3 × {fmt(m200.price)} = {fmt(Math.round(6.3 * m200.price))} ₸. Доставка — один рейс, {fmt(betonDelivery.tripUpTo8)} ₸.<br>
+        <b>Итого {fmt(Math.round(6.3 * m200.price) + betonDelivery.tripUpTo8)} ₸ с НДС.</b></p>
+
+      <h2>Пескобетон или бетон с щебнем</h2>
+      <p>
+        Толстое и нагруженное — <a href="/beton/">бетон</a>: фундаменты, стены, площадки толще 10 см.
+        Тонкое и ровное — пескобетон. Цены близкие: бетон М200 — {fmt(beton[2].price)} ₸, пескобетон М200 — {fmt(m200.price)} ₸.
+        Подробное сравнение — в статье <a href="/blog/peskobeton-ili-beton/">пескобетон или бетон</a>.
+      </p>
+
+      <Cta wa={waText} />
+      <Faq items={faq} />
+    </div>
+  </div>
+</Base>
