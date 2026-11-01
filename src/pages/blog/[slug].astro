@@ -1,0 +1,65 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Cta from '../../components/Cta.astro';
+import Faq from '../../components/Faq.astro';
+import { faqSchema, crumbsSchema } from '../../data/schema';
+import { products } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+
+const moneyPage =
+  d.product === 'shheben'
+    ? { name: 'Щебень', slug: 'shheben' }
+    : products.find((p) => p.key === d.product) ?? { name: 'Каталог', slug: '' };
+
+const all = await getCollection('blog');
+const related = all
+  .filter((p) => p.id !== post.id && p.data.product === d.product)
+  .slice(0, 5);
+
+const crumbs = [
+  { name: 'Главная', path: '/' },
+  { name: 'Статьи', path: '/blog/' },
+  { name: d.h1, path: `/blog/${post.id}/` },
+];
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.h1,
+    description: d.description,
+    datePublished: d.date,
+    dateModified: d.date,
+    author: { '@type': 'Organization', name: 'Инертка' },
+    publisher: { '@id': 'https://inertka.kz/#org' },
+    mainEntityOfPage: `https://inertka.kz/blog/${post.id}/`,
+  },
+  crumbsSchema(crumbs),
+  ...(d.faq?.length ? [faqSchema(d.faq)] : []),
+];
+---
+<Base title={d.title} description={d.description} schema={schema}>
+  <div class="wrap">
+    <nav class="crumbs"><a href="/">Главная</a> › <a href="/blog/">Статьи</a></nav>
+    <article class="prose">
+      <h1>{d.h1}</h1>
+      <Content />
+      <Cta />
+      <p>Цены и условия: <a href={`/${moneyPage.slug}/`}>{moneyPage.name} в Астане</a>.</p>
+      {d.faq?.length ? <Faq items={d.faq} /> : null}
+      {related.length > 0 && (
+        <>
+          <h2>Ещё по теме</h2>
+          <ul>{related.map((r) => <li><a href={`/blog/${r.id}/`}>{r.data.h1}</a></li>)}</ul>
+        </>
+      )}
+    </article>
+  </div>
+</Base>

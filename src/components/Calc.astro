@@ -1,0 +1,42 @@
+---
+import { products, site, fmt } from '../data/site';
+interface Props { selected?: string }
+const { selected } = Astro.props;
+const priced = products.filter((p) => p.price);
+---
+<div class="calc" id="calc">
+  <h3 style="margin-top:0">Калькулятор стоимости</h3>
+  <label for="calc-p">Материал</label>
+  <select id="calc-p">
+    {priced.map((p) => (
+      <option value={p.price} data-name={p.name} selected={p.key === selected}>
+        {p.name} — {fmt(p.price!)} ₸/т
+      </option>
+    ))}
+  </select>
+  <label for="calc-t">Сколько тонн</label>
+  <input id="calc-t" type="number" min="1" step="1" value="100" inputmode="numeric" />
+  <div class="res" id="calc-r"></div>
+  <div class="btns"><a class="btn btn-wa" id="calc-wa" href="#" rel="nofollow" target="_blank">Заказать в WhatsApp</a></div>
+</div>
+<script define:vars={{ wa: site.whatsapp, free: site.freeDeliveryFrom }}>
+  const sel = document.getElementById('calc-p');
+  const inp = document.getElementById('calc-t');
+  const res = document.getElementById('calc-r');
+  const btn = document.getElementById('calc-wa');
+  const f = (n) => Math.round(n).toLocaleString('ru-RU');
+  function upd() {
+    const price = +sel.value;
+    const t = Math.max(0, +inp.value || 0);
+    const name = sel.selectedOptions[0].dataset.name;
+    const sum = price * t;
+    const dlv = t >= free
+      ? 'Доставка по Астане включена.'
+      : `До ${free} т доставка платная — сумму назовёт менеджер.`;
+    res.innerHTML = `${name}, ${f(t)} т: <b>${f(sum)} ₸</b> с НДС<br><small>${dlv}</small>`;
+    btn.href = `https://wa.me/${wa}?text=` + encodeURIComponent(`Здравствуйте! Нужно: ${name}, ${t} т. Предварительно ${f(sum)} ₸. Адрес доставки: `);
+  }
+  sel.addEventListener('change', upd);
+  inp.addEventListener('input', upd);
+  upd();
+</script>

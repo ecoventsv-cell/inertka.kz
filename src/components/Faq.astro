@@ -1,0 +1,14 @@
+---
+// Блок «Частые вопросы». Разметку FAQPage страница кладёт в schema через faqSchema().
+interface Props { items: { q: string; a: string }[] }
+const { items } = Astro.props;
+---
+<section class="faq">
+  <h2>Частые вопросы</h2>
+  {items.map((i) => (
+    <details>
+      <summary>{i.q}</summary>
+      <p set:html={i.a} />
+    </details>
+  ))}
+</section>

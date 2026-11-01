@@ -1,0 +1,13 @@
+---
+import { site, waLink } from '../data/site';
+interface Props { text?: string; wa?: string }
+const { text = 'Назовите материал, объём и адрес — менеджер посчитает сумму с доставкой.', wa } = Astro.props;
+---
+<div class="cta">
+  <p><b>{text}</b></p>
+  <p>{site.manager}, {site.phone}. Цены с НДС, оплата перечислением, сертификаты на материал.</p>
+  <div class="btns">
+    <a class="btn btn-wa" href={waLink(wa)} rel="nofollow" target="_blank">Написать в WhatsApp</a>
+    <a class="btn btn-call" href={site.phoneHref}>Позвонить</a>
+  </div>
+</div>

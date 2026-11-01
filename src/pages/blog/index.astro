@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const groups = [
+  { key: 'dresva', name: 'Дресва' },
+  { key: 'shheben-20-40', name: 'Щебень 20-40' },
+  { key: 'shheben-0-50', name: 'Щебень 0-50' },
+  { key: 'shheben', name: 'Щебень: общее' },
+  { key: 'beton', name: 'Бетон' },
+];
+const kinds: Record<string, string> = {
+  kommercheskaya: 'цена и заказ',
+  ekspertnaya: 'разбор',
+  sravnenie: 'выбор',
+};
+---
+<Base title="Статьи о дресве и щебне — цены, расчёт, выбор | Инертка" description="Статьи про дресву и щебень в Астане: сколько стоит, как посчитать объём, какую фракцию выбрать под задачу и как не ошибиться при заказе.">
+  <div class="wrap prose">
+    <nav class="crumbs"><a href="/">Главная</a> › Статьи</nav>
+    <h1>Статьи о дресве и щебне</h1>
+    <p>Разбираем цены, расчёт объёма и выбор материала под конкретную стройку в Астане.</p>
+    {groups.map((g) => {
+      const list = posts.filter((p) => p.data.product === g.key);
+      return list.length > 0 && (
+        <section>
+          <h2>{g.name}</h2>
+          <ul class="post-list">
+            {list.map((p) => (
+              <li><span class="tag">{kinds[p.data.kind]}</span><a href={`/blog/${p.id}/`}>{p.data.h1}</a></li>
+            ))}
+          </ul>
+        </section>
+      );
+    })}
+  </div>
+</Base>

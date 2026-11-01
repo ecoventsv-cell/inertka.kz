@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import Calc from '../../components/Calc.astro';
+import Faq from '../../components/Faq.astro';
+import Cta from '../../components/Cta.astro';
+import { products, fmt, terms, waLink, site } from '../../data/site';
+import { faqSchema, crumbsSchema } from '../../data/schema';
+import { getCollection } from 'astro:content';
+
+const items = products.filter((p) => p.key.startsWith('shheben'));
+const faq = [
+  { q: 'Сколько стоит щебень в Астане?', a: 'Щебень 20-40 — 7 500 ₸/т, щебень 0-50 — 7 000 ₸/т. Цены с НДС. От 100 тонн доставка по Астане включена.' },
+  { q: 'Какой щебень нужен для фундамента?', a: 'Для бетона фундамента — 20-40. Для подушки под фундамент подойдёт и 20-40, и 0-50, если подушку хорошо уплотнят.' },
+  { q: 'Какой щебень лучше для дороги или парковки?', a: 'Для основания — 0-50: он уплотняется плотнее и дешевле. Если нужен дренирующий слой, берут 20-40.' },
+  { q: 'Есть доставка щебня по Астане?', a: 'Да. При заказе от 100 тонн доставка по всему городу включена в цену. До 100 тонн — платная, сумму называет менеджер.' },
+];
+const crumbs = [{ name: 'Главная', path: '/' }, { name: 'Щебень', path: '/shheben/' }];
+const posts = (await getCollection('blog')).filter((x) => x.data.product.startsWith('shheben'));
+---
+<Base
+  title="Щебень в Астане — цена от 7 000 ₸/т с НДС, доставка | Инертка"
+  description="Купить щебень в Астане: 20-40 — 7 500 ₸/т, 0-50 — 7 000 ₸/т с НДС. От 100 т доставка по городу включена. Сертификаты, оплата перечислением."
+  schema={[faqSchema(faq), crumbsSchema(crumbs)]}
+>
+  <section class="hero">
+    <div class="wrap">
+      <h1>Щебень в Астане с доставкой</h1>
+      <p>Две ходовые фракции: 20-40 для бетона и дренажа, 0-50 для оснований дорог и площадок. Цены с НДС, от 100 тонн доставка включена.</p>
+      <div class="btns">
+        <a class="btn btn-wa" href={waLink('Здравствуйте! Нужен щебень, фракция: …, объём: … т, адрес: …')} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
+        <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <div class="grid" style="margin-top:24px">
+      {items.map((p) => (
+        <div class="card">
+          <h3><a href={`/${p.slug}/`}>{p.name}</a></h3>
+          <div class="price">{fmt(p.price!)} ₸ <small>за тонну с НДС</small></div>
+          <p>{p.short}</p>
+          <a class="more" href={`/${p.slug}/`}>Подробнее и расчёт →</a>
+        </div>
+      ))}
+    </div>
+    <ul class="terms">{terms.map((t) => <li>{t}</li>)}</ul>
+    <div class="prose">
+      <Calc selected="shheben-20-40" />
+      <h2>Какую фракцию выбрать</h2>
+      <table>
+        <thead><tr><th>Задача</th><th>Фракция</th></tr></thead>
+        <tbody>
+          <tr><td>Бетон для фундамента, плит, монолита</td><td><a href="/shheben/20-40/">20-40</a></td></tr>
+          <tr><td>Дренаж, отвод воды от фундамента</td><td><a href="/shheben/20-40/">20-40</a></td></tr>
+          <tr><td>Подушка под фундамент</td><td>20-40 или 0-50</td></tr>
+          <tr><td>Основание дороги, проезда</td><td><a href="/shheben/0-50/">0-50</a></td></tr>
+          <tr><td>Парковка, промплощадка, склад</td><td><a href="/shheben/0-50/">0-50</a></td></tr>
+          <tr><td>Обратная засыпка, подъём участка</td><td><a href="/dresva/">дресва</a> — дешевле</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Простое правило: если щебень пойдёт в бетон или должен пропускать воду — нужен 20-40, где камни
+        одного размера. Если нужен плотный слой под нагрузку — 0-50, где мелочь заполняет пустоты.
+        Для засыпки, где важен объём, а не прочность, выгоднее <a href="/dresva/">дресва</a> за 6 000 ₸/т.
+      </p>
+      <h2>Почему цена за тонну, а не за куб</h2>
+      <p>
+        Тонну проверяют на весах, а куб в кузове — на глаз, и он зависит от того, как материал улёгся.
+        Продажа по весу честнее для обеих сторон. Чтобы перевести: в кубе щебня 20-40 около 1,4 т,
+        в кубе 0-50 — около 1,55 т.
+      </p>
+      <Cta />
+      <Faq items={faq} />
+      {posts.length > 0 && (
+        <>
+          <h2>Статьи о щебне</h2>
+          <ul>{posts.map((x) => <li><a href={`/blog/${x.id}/`}>{x.data.h1}</a></li>)}</ul>
+        </>
+      )}
+    </div>
+  </div>
+</Base>

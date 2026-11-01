@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, waLink } from '../data/site';
+---
+<Base
+  title="Контакты — Инертка, дресва и щебень в Астане"
+  description={`Телефон и WhatsApp: ${site.phone}, менеджер ${site.manager}. Офис: ${site.address}.`}
+>
+  <div class="wrap prose">
+    <nav class="crumbs"><a href="/">Главная</a> › Контакты</nav>
+    <h1>Контакты</h1>
+    <p><b>Менеджер:</b> {site.manager}</p>
+    <p><b>Телефон и WhatsApp:</b> <a href={site.phoneHref}>{site.phone}</a></p>
+    <p><b>Офис:</b> {site.address}</p>
+    <div class="btns">
+      <a class="btn btn-wa" href={waLink()} rel="nofollow" target="_blank">Написать в WhatsApp</a>
+      <a class="btn btn-call" href={site.phoneHref}>Позвонить</a>
+    </div>
+    <iframe
+      title="Офис на карте"
+      src="https://yandex.ru/map-widget/v1/?text=%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%B5%D0%B9%D0%B1%D0%B8%D1%82%D1%88%D0%B8%D0%BB%D0%B8%D0%BA%2C%2018%2F1&z=16"
+      width="100%" height="360" style="border:0;border-radius:10px;margin-top:16px" loading="lazy"></iframe>
+  </div>
+</Base>

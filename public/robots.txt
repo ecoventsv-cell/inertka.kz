@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://inertka.kz/sitemap-index.xml
