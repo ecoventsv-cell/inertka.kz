@@ -20,6 +20,7 @@ export function productSchema(p: Product, description: string) {
     '@type': 'Product',
     name: `${p.name} в Астане`,
     description,
+    image: `${site.url}${p.img}`,
     brand: { '@type': 'Brand', name: site.name },
     offers: {
       '@type': 'Offer',

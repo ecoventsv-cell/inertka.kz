@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Calc from '../components/Calc.astro';
 import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Trust from '../components/Trust.astro';
 import { products, fmt, terms, waLink, site, beton } from '../data/site';
 import { faqSchema } from '../data/schema';
 
@@ -21,50 +23,59 @@ const faq = [
   schema={[faqSchema(faq)]}
 >
   <section class="hero">
-    <div class="wrap">
-      <h1>Дресва, щебень и бетон в Астане с доставкой</h1>
-      <p>Цены с НДС. На дресву и щебень от 100 тонн доставка по всей Астане включена. Бетон — с доставкой миксером. Официальная поставка, оплата перечислением.</p>
-      <div class="btns">
-        <a class="btn btn-wa" href={waLink()} rel="nofollow" target="_blank">Написать в WhatsApp</a>
-        <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Астана · цены с НДС · сертификаты</p>
+        <h1>Дресва, щебень и бетон с доставкой на объект</h1>
+        <p>Привозим инертные материалы и бетон по всей Астане. Работаем официально: договор, оплата перечислением, документы на каждую машину.</p>
+        <ul class="chips">
+          {products.map((p) => <li>{p.name} — <b>{fmt(p.price!)} ₸/т</b></li>)}
+          <li>Бетон — <b>от {fmt(beton[0].price)} ₸/м³</b></li>
+        </ul>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink()} rel="nofollow" target="_blank">Написать в WhatsApp</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="/img/dostavka-samosval.webp" width="476" height="470" alt="Самосвал выгружает щебень на объекте" fetchpriority="high" />
+        <div class="badge"><b>от 100 т</b>доставка по Астане бесплатно</div>
       </div>
     </div>
   </section>
   <div class="wrap">
+    <Trust />
     <h2>Материалы и цены</h2>
     <div class="grid">
       {products.map((p) => (
-        <div class="card">
-          <h3><a href={`/${p.slug}/`}>{p.name}</a></h3>
-          <div class="price">{fmt(p.price!)} ₸ <small>за тонну с НДС</small></div>
-          <p>{p.short}</p>
-          <a class="more" href={`/${p.slug}/`}>Подробнее →</a>
-        </div>
+        <ProductCard href={`/${p.slug}/`} img={p.img} w={p.w} h={p.h} name={p.name} price={fmt(p.price!)} unit="за тонну" text={p.short} />
       ))}
-      <div class="card">
-        <h3><a href="/beton/">Бетон</a></h3>
-        <div class="price">от {fmt(beton[0].price)} ₸ <small>за м³ с НДС</small></div>
-        <p>М100–М450 и пескобетон. Доставка миксером по Астане.</p>
-        <a class="more" href="/beton/">Цены по маркам →</a>
-      </div>
+      <ProductCard href="/beton/" img="/img/beton.webp" w={516} h={560} name="Бетон М100–М450" price={`от ${fmt(beton[0].price)}`} unit="за м³" text="Товарный бетон и пескобетон. Доставка миксером по Астане." more="Цены по маркам" />
     </div>
+    <div class="prose">
+      <Calc />
+    </div>
+    <h2>Что выбрать под задачу</h2>
+    <div class="prose">
+      <table>
+        <thead><tr><th>Задача</th><th>Что заказать</th></tr></thead>
+        <tbody>
+          <tr><td>Засыпать котлован, пазухи, поднять участок</td><td><a href="/dresva/">Дресва</a> — самый выгодный вариант</td></tr>
+          <tr><td>Щебень в бетон, дренаж, подушка под фундамент</td><td><a href="/shheben/20-40/">Щебень 20-40</a></td></tr>
+          <tr><td>Основание дороги, парковки, площадки</td><td><a href="/shheben/0-50/">Щебень 0-50</a></td></tr>
+          <tr><td>Готовый бетон на фундамент, стены, плиты</td><td><a href="/beton/">Бетон М250–М300</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Как заказать</h2>
+    <ol class="steps">
+      <li><b>Напишите или позвоните</b><span>Материал, объём, адрес и дата. Посчитаем тонны и сумму бесплатно.</span></li>
+      <li><b>Получите счёт с НДС</b><span>Менеджер подтвердит цену, сроки и график машин.</span></li>
+      <li><b>Оплатите перечислением</b><span>Машины едут на объект. С ними — накладные и сертификат.</span></li>
+    </ol>
     <h2>Условия на дресву и щебень</h2>
     <ul class="terms">{terms.map((t) => <li>{t}</li>)}</ul>
     <div class="prose">
-      <Calc />
-      <h2>Что выбрать под задачу</h2>
-      <ul>
-        <li><b>Засыпать котлован, пазухи, поднять участок</b> — <a href="/dresva/">дресва</a>, самый выгодный вариант.</li>
-        <li><b>Щебень в бетон, дренаж, подушка</b> — <a href="/shheben/20-40/">щебень 20-40</a>.</li>
-        <li><b>Готовый бетон на фундамент</b> — <a href="/beton/">бетон М250–М300</a> с доставкой миксером.</li>
-        <li><b>Основание дороги, парковки, площадки</b> — <a href="/shheben/0-50/">щебень 0-50</a>.</li>
-      </ul>
-      <h2>Как заказать</h2>
-      <ol>
-        <li>Напишите в WhatsApp или позвоните: материал, объём, адрес.</li>
-        <li>Менеджер подтвердит сумму и сроки и выставит счёт с НДС.</li>
-        <li>Оплата перечислением — и машины едут на объект.</li>
-      </ol>
       <Cta />
       <Faq items={faq} />
     </div>

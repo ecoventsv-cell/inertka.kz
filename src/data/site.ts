@@ -26,6 +26,9 @@ export type Product = {
   price: number | null; // ₸ за тонну с НДС
   unit: string;
   short: string;
+  img: string;
+  w: number;
+  h: number;
 };
 
 export const products: Product[] = [
@@ -37,6 +40,7 @@ export const products: Product[] = [
     price: 6000,
     unit: 'т',
     short: 'Для обратной засыпки, подсыпки площадок, дорог и оснований.',
+    img: '/img/dresva.webp', w: 264, h: 194,
   },
   {
     slug: 'shheben/20-40',
@@ -46,6 +50,7 @@ export const products: Product[] = [
     price: 7500,
     unit: 'т',
     short: 'Для бетона фундаментов, дренажа, оснований под дороги и площадки.',
+    img: '/img/shheben-20-40.webp', w: 264, h: 178,
   },
   {
     slug: 'shheben/0-50',
@@ -55,6 +60,7 @@ export const products: Product[] = [
     price: 7000,
     unit: 'т',
     short: 'Плотное основание под дороги, парковки, промплощадки и отсыпку.',
+    img: '/img/shheben-0-50.webp', w: 264, h: 174,
   },
 ];
 

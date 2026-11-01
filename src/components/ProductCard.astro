@@ -1,0 +1,15 @@
+---
+interface Props { href: string; img: string; w: number; h: number; name: string; price: string; unit: string; text: string; more?: string }
+const { href, img, w, h, name, price, unit, text, more = 'Подробнее и расчёт' } = Astro.props;
+---
+<a class="pcard" href={href}>
+  <div class="ph">
+    <img src={img} width={w} height={h} alt={name} loading="lazy" decoding="async" />
+    <span class="tag">{price} ₸ <small>{unit}</small></span>
+  </div>
+  <div class="body">
+    <h3>{name}</h3>
+    <p>{text}</p>
+    <span class="more">{more} →</span>
+  </div>
+</a>

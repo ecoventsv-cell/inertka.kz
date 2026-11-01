@@ -25,6 +25,7 @@ const org = {
   },
   areaServed: { '@type': 'City', name: 'Астана' },
   priceRange: '₸₸',
+  image: `${site.url}/img/dostavka-samosval.webp`,
 };
 const allSchema = [org, ...schema];
 ---
@@ -43,12 +44,15 @@ const allSchema = [org, ...schema];
   <meta property="og:url" content={canonical} />
   <meta name="theme-color" content="#44403c" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&family=Unbounded:wght@600;700&display=swap" />
   {allSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 </head>
 <body>
   <header class="top">
     <div class="wrap">
-      <a class="logo" href="/">Инерт<span>ка</span></a>
+      <a class="logo" href="/"><i></i><span>Инерт<em>ка</em></span></a>
       <nav class="nav">
         <a href="/dresva/">Дресва</a>
         <a href="/shheben/">Щебень</a>

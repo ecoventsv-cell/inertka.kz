@@ -28,7 +28,7 @@ const kinds: Record<string, string> = {
           <h2>{g.name}</h2>
           <ul class="post-list">
             {list.map((p) => (
-              <li><span class="tag">{kinds[p.data.kind]}</span><a href={`/blog/${p.id}/`}>{p.data.h1}</a></li>
+              <li><span class="tag-k">{kinds[p.data.kind]}</span><a href={`/blog/${p.id}/`}>{p.data.h1}</a></li>
             ))}
           </ul>
         </section>

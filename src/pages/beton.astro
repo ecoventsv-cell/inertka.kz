@@ -21,6 +21,7 @@ const offers = {
   '@type': 'Product',
   name: 'Товарный бетон в Астане',
   description: 'Бетон М100–М450 и пескобетон с доставкой миксером по Астане. Цены за м³ с НДС.',
+  image: `${site.url}/img/beton.webp`,
   brand: { '@type': 'Brand', name: site.name },
   offers: {
     '@type': 'AggregateOffer',
@@ -40,14 +41,20 @@ const waText = 'Здравствуйте! Нужен бетон, марка: …
   schema={[offers, faqSchema(faq), crumbsSchema(crumbs)]}
 >
   <section class="hero">
-    <div class="wrap">
-      <nav class="crumbs" style="color:#d6d3d1"><a href="/" style="color:#d6d3d1">Главная</a> › </nav>
-      <h1>Бетон в Астане с доставкой миксером</h1>
-      <p style="font-size:1.6rem;font-weight:800;color:#fdba74;margin:.2em 0">от {fmt(beton[0].price)} ₸ за м³ с НДС</p>
-      <p>Товарный бетон от М100 до М450 и пескобетон. Привозим миксером на объект по всей Астане. Оплата перечислением.</p>
-      <div class="btns">
-        <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
-        <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs"><a href="/">Главная</a> › </nav>
+        <h1>Бетон в Астане с доставкой миксером</h1>
+        <p class="hero-price">от {fmt(beton[0].price)} ₸ <small>за м³ с НДС</small></p>
+        <p>Товарный бетон от М100 до М450 и пескобетон. Привозим миксером на объект по всей Астане. Оплата перечислением.</p>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="/img/beton.webp" width="516" height="560" alt="Свежий товарный бетон" fetchpriority="high" />
+        <div class="badge"><b>М100–М450</b>и пескобетон</div>
       </div>
     </div>
   </section>
@@ -60,6 +67,7 @@ const waText = 'Здравствуйте! Нужен бетон, марка: …
     <p>Сульфатостойкий бетон — плюс {sulfatePlus} ₸ к цене за куб.</p>
 
     <h2>Цены на пескобетон</h2>
+    <figure class="figure"><img src="/img/peskobeton.webp" width="560" height="369" alt="Пескобетон при выгрузке" loading="lazy" /></figure>
     <table class="price-table">
       <thead><tr><th>Марка</th><th>Класс</th><th>Цена за м³ с НДС</th></tr></thead>
       <tbody>{peskobeton.map((x) => <tr><td>{x.mark}</td><td>{x.cls}</td><td class="p">{fmt(x.price)} ₸</td></tr>)}</tbody>

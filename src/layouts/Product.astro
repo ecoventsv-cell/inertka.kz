@@ -3,6 +3,7 @@ import Base from './Base.astro';
 import Calc from '../components/Calc.astro';
 import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
+import Trust from '../components/Trust.astro';
 import { getCollection } from 'astro:content';
 import { site, waLink, fmt, terms, type Product } from '../data/site';
 import { faqSchema, productSchema, crumbsSchema } from '../data/schema';
@@ -24,24 +25,32 @@ const waText = `Здравствуйте! Нужна ${p.name.toLowerCase()}, о
 ---
 <Base title={title} description={description} schema={schema}>
   <section class="hero">
-    <div class="wrap">
-      <nav class="crumbs" style="color:#d6d3d1">
-        {crumbs.slice(0, -1).map((c) => <><a href={c.path} style="color:#d6d3d1">{c.name}</a> › </>)}
-      </nav>
-      <h1>{p.h1}</h1>
-      <p style="font-size:1.6rem;font-weight:800;color:#fdba74;margin:.2em 0">{fmt(p.price!)} ₸ за тонну с НДС</p>
-      <p>{lead}</p>
-      <div class="btns">
-        <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
-        <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs">
+          {crumbs.slice(0, -1).map((c) => <><a href={c.path}>{c.name}</a> › </>)}
+        </nav>
+        <h1>{p.h1}</h1>
+        <p class="hero-price">{fmt(p.price!)} ₸ <small>за тонну с НДС</small></p>
+        <p>{lead}</p>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink(waText)} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo wide">
+        <img src={p.img} width={p.w} height={p.h} alt={`${p.name} — фото материала`} fetchpriority="high" />
+        <div class="badge"><b>от 100 т</b>доставка по Астане бесплатно</div>
       </div>
     </div>
   </section>
   <div class="wrap">
-    <ul class="terms" style="margin-top:24px">{terms.map((t) => <li>{t}</li>)}</ul>
+    <Trust />
     <div class="prose">
       <Calc selected={p.key} />
       <slot />
+      <h2>Условия поставки</h2>
+      <ul class="terms">{terms.map((t) => <li>{t}</li>)}</ul>
       <Cta wa={waText} />
       <Faq items={faq} />
       {posts.length > 0 && (

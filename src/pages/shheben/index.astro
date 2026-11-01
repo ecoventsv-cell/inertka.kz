@@ -3,6 +3,8 @@ import Base from '../../layouts/Base.astro';
 import Calc from '../../components/Calc.astro';
 import Faq from '../../components/Faq.astro';
 import Cta from '../../components/Cta.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Trust from '../../components/Trust.astro';
 import { products, fmt, terms, waLink, site } from '../../data/site';
 import { faqSchema, crumbsSchema } from '../../data/schema';
 import { getCollection } from 'astro:content';
@@ -23,24 +25,28 @@ const posts = (await getCollection('blog')).filter((x) => x.data.product.startsW
   schema={[faqSchema(faq), crumbsSchema(crumbs)]}
 >
   <section class="hero">
-    <div class="wrap">
-      <h1>Щебень в Астане с доставкой</h1>
-      <p>Две ходовые фракции: 20-40 для бетона и дренажа, 0-50 для оснований дорог и площадок. Цены с НДС, от 100 тонн доставка включена.</p>
-      <div class="btns">
-        <a class="btn btn-wa" href={waLink('Здравствуйте! Нужен щебень, фракция: …, объём: … т, адрес: …')} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
-        <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+    <div class="wrap hero-grid">
+      <div>
+        <nav class="crumbs"><a href="/">Главная</a> › </nav>
+        <h1>Щебень в Астане с доставкой</h1>
+        <p class="hero-price">от 7 000 ₸ <small>за тонну с НДС</small></p>
+        <p>Две ходовые фракции: 20-40 для бетона и дренажа, 0-50 для оснований дорог и площадок. От 100 тонн доставка по Астане включена.</p>
+        <div class="btns">
+          <a class="btn btn-wa" href={waLink('Здравствуйте! Нужен щебень, фракция: …, объём: … т, адрес: …')} rel="nofollow" target="_blank">Заказать в WhatsApp</a>
+          <a class="btn btn-call" href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="/img/dostavka-samosval.webp" width="476" height="470" alt="Самосвал выгружает щебень" fetchpriority="high" />
+        <div class="badge"><b>от 100 т</b>доставка по Астане бесплатно</div>
       </div>
     </div>
   </section>
   <div class="wrap">
-    <div class="grid" style="margin-top:24px">
+    <Trust />
+    <div class="grid">
       {items.map((p) => (
-        <div class="card">
-          <h3><a href={`/${p.slug}/`}>{p.name}</a></h3>
-          <div class="price">{fmt(p.price!)} ₸ <small>за тонну с НДС</small></div>
-          <p>{p.short}</p>
-          <a class="more" href={`/${p.slug}/`}>Подробнее и расчёт →</a>
-        </div>
+        <ProductCard href={`/${p.slug}/`} img={p.img} w={p.w} h={p.h} name={p.name} price={fmt(p.price!)} unit="за тонну" text={p.short} />
       ))}
     </div>
     <ul class="terms">{terms.map((t) => <li>{t}</li>)}</ul>
