@@ -42,7 +42,11 @@ const allSchema = [org, ...schema];
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
-  <meta name="theme-color" content="#44403c" />
+  <meta name="theme-color" content="#1b1e23" />
+  <meta property="og:image" content={`${site.url}/img/dostavka-samosval.webp`} />
+  <meta property="og:site_name" content="Инертка" />
+  {site.googleVerify && <meta name="google-site-verification" content={site.googleVerify} />}
+  {site.yandexVerify && <meta name="yandex-verification" content={site.yandexVerify} />}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

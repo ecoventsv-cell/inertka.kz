@@ -1,10 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site, waLink } from '../data/site';
+import Faq from '../components/Faq.astro';
+import { site, waLink, products, beton, fmt } from '../data/site';
+import { faqSchema } from '../data/schema';
+
+const faq = [
+  { q: 'Как быстрее всего заказать?', a: `Написать в WhatsApp на номер ${site.phone}: материал, объём, адрес и дату. Менеджер ответит, посчитает сумму и выставит счёт.` },
+  { q: 'Можно приехать в офис?', a: `Да, офис находится по адресу: ${site.address}. Перед визитом лучше позвонить — менеджер может быть на объекте.` },
+  { q: 'Работаете с физическими лицами?', a: 'Да. Возим и частным заказчикам, и компаниям. Цены с НДС, оплата перечислением.' },
+];
 ---
 <Base
-  title="Контакты — Инертка, дресва и щебень в Астане"
-  description={`Телефон и WhatsApp: ${site.phone}, менеджер ${site.manager}. Офис: ${site.address}.`}
+  title="Контакты — Инертка, дресва, щебень и бетон в Астане"
+  description={`Телефон и WhatsApp: ${site.phone}, менеджер ${site.manager}. Офис: ${site.address}. Заказ дресвы, щебня и бетона с доставкой.`}
+  schema={[faqSchema(faq)]}
 >
   <div class="wrap prose">
     <nav class="crumbs"><a href="/">Главная</a> › Контакты</nav>
@@ -16,9 +25,33 @@ import { site, waLink } from '../data/site';
       <a class="btn btn-wa" href={waLink()} rel="nofollow" target="_blank">Написать в WhatsApp</a>
       <a class="btn btn-call" href={site.phoneHref}>Позвонить</a>
     </div>
+
+    <h2>Что написать, чтобы получить цену за 5 минут</h2>
+    <ol>
+      <li><b>Материал</b> — дресва, щебень (какая фракция) или бетон (какая марка).</li>
+      <li><b>Объём</b> — в тоннах или кубах. Если не знаете, пришлите размеры: посчитаем сами.</li>
+      <li><b>Адрес</b> объекта в Астане.</li>
+      <li><b>Дату</b> и, для бетона, время заливки.</li>
+      <li><b>Реквизиты</b> компании, если нужен счёт на юрлицо.</li>
+    </ol>
+    <p>Можно отправить фото проекта или страницы сметы — разберёмся и предложим, что и сколько заказать.</p>
+
+    <h2>Что мы поставляем</h2>
+    <table>
+      <thead><tr><th>Материал</th><th>Цена с НДС</th></tr></thead>
+      <tbody>
+        {products.map((p) => <tr><td><a href={`/${p.slug}/`}>{p.name}</a></td><td>{fmt(p.price!)} ₸/т</td></tr>)}
+        <tr><td><a href="/beton/">Бетон М100–М450</a></td><td>от {fmt(beton[0].price)} ₸/м³</td></tr>
+        <tr><td><a href="/beton/peskobeton/">Пескобетон</a></td><td>по маркам</td></tr>
+      </tbody>
+    </table>
+    <p>Условия доставки и оплаты — на странице <a href="/dostavka/">доставка и оплата</a>.</p>
+
+    <h2>Офис на карте</h2>
     <iframe
       title="Офис на карте"
       src="https://yandex.ru/map-widget/v1/?text=%D0%90%D1%81%D1%82%D0%B0%D0%BD%D0%B0%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%91%D0%B5%D0%B9%D0%B1%D0%B8%D1%82%D1%88%D0%B8%D0%BB%D0%B8%D0%BA%2C%2018%2F1&z=16"
-      width="100%" height="360" style="border:0;border-radius:10px;margin-top:16px" loading="lazy"></iframe>
+      width="100%" height="360" style="border:0;border-radius:10px" loading="lazy"></iframe>
+    <Faq items={faq} />
   </div>
 </Base>

@@ -4,7 +4,7 @@ import Base from '../../layouts/Base.astro';
 import Cta from '../../components/Cta.astro';
 import Faq from '../../components/Faq.astro';
 import { faqSchema, crumbsSchema } from '../../data/schema';
-import { products } from '../../data/site';
+import { products, beton, betonDelivery, fmt, site } from '../../data/site';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -21,6 +21,10 @@ const moneyPage =
     ? { name: 'Бетон', slug: 'beton' }
     : products.find((p) => p.key === d.product) ?? { name: 'Каталог', slug: '' };
 
+const isBeton = d.product === 'beton';
+const priceRows = isBeton
+  ? beton.filter((x) => ['М200', 'М250', 'М300', 'М350'].includes(x.mark)).map((x) => ({ name: `Бетон ${x.mark}`, price: `${fmt(x.price)} ₸/м³` }))
+  : products.map((p) => ({ name: p.name, price: `${fmt(p.price!)} ₸/т` }));
 const all = await getCollection('blog');
 const related = all
   .filter((p) => p.id !== post.id && p.data.product === d.product)
@@ -53,6 +57,15 @@ const schema = [
     <article class="prose">
       <h1>{d.h1}</h1>
       <Content />
+      <h2>Цены и условия</h2>
+      <table class="price-table">
+        <tbody>{priceRows.map((r) => <tr><td>{r.name}</td><td class="p">{r.price}</td></tr>)}</tbody>
+      </table>
+      {isBeton ? (
+        <p>Цены с НДС. Доставка миксером по Астане: до 8 м³ — {fmt(betonDelivery.tripUpTo8)} ₸ за рейс, от 8 м³ — {fmt(betonDelivery.perM3From8)} ₸ за м³. Оплата перечислением, документы на каждую машину.</p>
+      ) : (
+        <p>Цены за тонну с НДС. От {site.freeDeliveryFrom} тонн доставка по всей Астане включена, до {site.freeDeliveryFrom} тонн — платная, сумму называет менеджер. Сертификаты, оплата перечислением, скидки на большие объёмы.</p>
+      )}
       <Cta />
       <p>Цены и условия: <a href={`/${moneyPage.slug}/`}>{moneyPage.name} в Астане</a>.</p>
       {d.faq?.length ? <Faq items={d.faq} /> : null}
