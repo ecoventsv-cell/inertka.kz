@@ -4,6 +4,12 @@ workers_dev = false
 preview_urls = false
 main = "worker.js"
 
+# Домен подключается сам при деплое — зона inertka.kz должна быть в том же аккаунте Cloudflare.
+routes = [
+  { pattern = "inertka.kz", custom_domain = true },
+  { pattern = "www.inertka.kz", custom_domain = true },
+]
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"
