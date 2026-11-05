@@ -41,10 +41,14 @@ const product = {
 const others = markPages.filter((x) => x.slug !== m.slug);
 // Ориентировочный состав на 1 м³ (цемент М400) и типовые показатели — для справки, точное по проекту.
 const comp: Record<string, { c: number; sand: string; stone: string; w: number; f: string; wt: string }> = {
+  'М100': { c: 200, sand: '0,55', stone: '1,25', w: 180, f: 'F50', wt: 'W2' },
+  'М150': { c: 240, sand: '0,52', stone: '1,22', w: 180, f: 'F50–F75', wt: 'W2' },
   'М200': { c: 280, sand: '0,50', stone: '1,20', w: 185, f: 'F100', wt: 'W4' },
   'М250': { c: 310, sand: '0,48', stone: '1,18', w: 185, f: 'F100–F150', wt: 'W4–W6' },
   'М300': { c: 350, sand: '0,45', stone: '1,15', w: 190, f: 'F150–F200', wt: 'W6–W8' },
   'М350': { c: 390, sand: '0,43', stone: '1,10', w: 195, f: 'F200', wt: 'W8' },
+  'М400': { c: 430, sand: '0,40', stone: '1,08', w: 195, f: 'F200–F300', wt: 'W8–W10' },
+  'М450': { c: 470, sand: '0,38', stone: '1,05', w: 195, f: 'F300', wt: 'W10–W12' },
 };
 const k = comp[m.mark];
 const vols = [3, 5, 8, 10, 15, 20, 30, 50];
