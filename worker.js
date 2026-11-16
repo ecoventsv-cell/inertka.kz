@@ -11,6 +11,13 @@ export default {
       url.pathname += '/';
       return Response.redirect(url.toString(), 301);
     }
-    return env.ASSETS.fetch(request);
+    const res = await env.ASSETS.fetch(request);
+    const out = new Response(res.body, res);
+    // Файлы с хэшем в имени не меняются — кэшируем на год; картинки — на неделю.
+    if (url.pathname.startsWith('/_astro/')) out.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    else if (url.pathname.startsWith('/img/') || /\.(png|jpg|webp|svg|ico)$/.test(url.pathname)) out.headers.set('Cache-Control', 'public, max-age=604800');
+    out.headers.set('X-Content-Type-Options', 'nosniff');
+    out.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    return out;
   },
 };
