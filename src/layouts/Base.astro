@@ -1,4 +1,12 @@
 ---
+import '@fontsource/golos-text/cyrillic-400.css';
+import '@fontsource/golos-text/cyrillic-500.css';
+import '@fontsource/golos-text/cyrillic-700.css';
+import '@fontsource/golos-text/latin-400.css';
+import '@fontsource/golos-text/latin-700.css';
+import '@fontsource/unbounded/cyrillic-600.css';
+import '@fontsource/unbounded/cyrillic-700.css';
+import '@fontsource/unbounded/latin-700.css';
 import '../styles/global.css';
 import { site, waLink } from '../data/site';
 
@@ -6,8 +14,10 @@ interface Props {
   title: string;
   description: string;
   schema?: object[];
+  image?: string; // путь картинки для соцсетей, jpg
+  type?: 'website' | 'article';
 }
-const { title, description, schema = [] } = Astro.props;
+const { title, description, schema = [], image = '/img/og-default.jpg', type = 'website' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 
 const org = {
@@ -25,9 +35,28 @@ const org = {
   },
   areaServed: { '@type': 'City', name: 'Астана' },
   priceRange: '₸₸',
-  image: `${site.url}/img/dostavka-samosval.webp`,
+  image: `${site.url}/img/og-default.jpg`,
+  logo: `${site.url}/logo.png`,
+  description: 'Дресва, щебень 20-40, 5-20, 0-50, товарный бетон и пескобетон с доставкой по Астане. Цены с НДС, оплата перечислением, сертификаты.',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: site.phone.replace(/\s/g, ''),
+    contactType: 'sales',
+    areaServed: 'KZ',
+    availableLanguage: ['ru', 'kk'],
+  },
+  knowsAbout: ['дресва', 'щебень', 'товарный бетон', 'пескобетон', 'инертные материалы', 'доставка сыпучих материалов'],
 };
-const allSchema = [org, ...schema];
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#site`,
+  url: site.url,
+  name: 'Инертка',
+  inLanguage: 'ru',
+  publisher: { '@id': `${site.url}/#org` },
+};
+const allSchema = Astro.url.pathname === '/' ? [org, website, ...schema] : [org, ...schema];
 ---
 <!doctype html>
 <html lang="ru">
@@ -37,20 +66,21 @@ const allSchema = [org, ...schema];
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={type} />
   <meta property="og:locale" content="ru_RU" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:url" content={canonical} />
   <meta name="theme-color" content="#1b1e23" />
-  <meta property="og:image" content={`${site.url}/img/dostavka-samosval.webp`} />
+  <meta property="og:image" content={`${site.url}${image}`} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <meta property="og:site_name" content="Инертка" />
   {site.googleVerify && <meta name="google-site-verification" content={site.googleVerify} />}
   {site.yandexVerify && <meta name="yandex-verification" content={site.yandexVerify} />}
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&family=Unbounded:wght@600;700&display=swap" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
   {allSchema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
 </head>
 <body>
@@ -63,6 +93,7 @@ const allSchema = [org, ...schema];
         <a href="/beton/">Бетон</a>
         <a href="/dostavka/">Доставка и оплата</a>
         <a href="/blog/">Статьи</a>
+        <a href="/o-kompanii/">О компании</a>
         <a href="/kontakty/">Контакты</a>
       </nav>
       <a class="top-phone" href={site.phoneHref}>{site.phone}</a>
@@ -96,7 +127,8 @@ const allSchema = [org, ...schema];
         <b>Контакты</b><br />
         <a href={site.phoneHref}>{site.phone}</a> — {site.manager}<br />
         <a href={waLink()} rel="nofollow">Написать в WhatsApp</a><br />
-        {site.address}
+        {site.address}<br />
+        <a href="/o-kompanii/">О компании</a> · <a href="/dostavka/">Доставка и оплата</a>
       </div>
     </div>
   </footer>

@@ -34,6 +34,7 @@ const product = {
     price: row.price,
     priceCurrency: 'KZT',
     availability: 'https://schema.org/InStock',
+    priceValidUntil: '2027-06-30',
     url: `${site.url}/beton/${m.slug}/`,
     seller: { '@id': `${site.url}/#org` },
   },
@@ -54,7 +55,7 @@ const k = comp[m.mark];
 const vols = [3, 5, 8, 10, 15, 20, 30, 50];
 const dlv = (v: number) => (v < 8 ? betonDelivery.tripUpTo8 : v * betonDelivery.perM3From8);
 ---
-<Base title={title} description={description} schema={[product, faqSchema(m.faq), crumbsSchema(crumbs)]}>
+<Base title={title} description={description} schema={[product, faqSchema(m.faq), crumbsSchema(crumbs)]} image="/img/beton.jpg">
   <section class="hero">
     <div class="wrap hero-grid">
       <div>

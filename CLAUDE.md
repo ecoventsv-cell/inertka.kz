@@ -45,6 +45,18 @@ qurylys-beton.kz (единственный с блогом); инертные �
 расчёт, ссылка на WhatsApp и на страницу товара. Перед новой статьёй прочитать
 существующие по теме, чтобы не дублировать.
 
+## Индексация и ИИ-поиск
+
+- `public/llms.txt` — справка о компании и ценах для ChatGPT, Claude, Perplexity. При смене цен править и его.
+- `robots.txt` открыт для поисковиков и ИИ-ботов. Sitemap: `/sitemap-index.xml`.
+- IndexNow (Яндекс, Bing): ключ-файл в `public/`, отправка — `npm run indexnow` после выкладки.
+  В Cloudflare Workers Builds команда деплоя: `npx wrangler deploy && npm run indexnow`.
+- Коды Search Console и Вебмастера вставлять в `site.googleVerify` / `site.yandexVerify` (`src/data/site.ts`).
+
+Топ-5 конкурентов по Астане (16.11.2026): abk-beton.kz, qurylys-beton.kz, avers.kz (бетон),
+5-20.kz, maqcom.kz (щебень, дресва). Их цены ниже наших: 5-20.kz щебень 20-40 — 3 700 ₸/т
+и дресва 1 500 ₸/т на карьере, без доставки.
+
 ## Перед выкладкой
 
 `npm run build && npm run preflight` — ловит битые ссылки, дубли title/H1, битый JSON-LD.

@@ -27,6 +27,8 @@ export function productSchema(p: Product, description: string) {
       price: p.price,
       priceCurrency: 'KZT',
       availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      priceValidUntil: '2027-06-30',
       url: `${site.url}/${p.slug}/`,
       seller: { '@id': `${site.url}/#org` },
       priceSpecification: {

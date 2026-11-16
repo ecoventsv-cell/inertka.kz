@@ -1,4 +1,21 @@
+# Сайт открыт для всех поисковых систем и ИИ-поиска (ChatGPT, Claude, Perplexity, Gemini, YandexGPT).
 User-agent: *
+Allow: /
+Disallow: /404
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://inertka.kz/sitemap-index.xml

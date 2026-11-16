@@ -11,6 +11,7 @@ const blog = defineCollection({
     product: z.enum(['dresva', 'shheben-20-40', 'shheben-5-20', 'shheben-0-50', 'shheben', 'beton']),
     kind: z.enum(['kommercheskaya', 'ekspertnaya', 'sravnenie']),
     date: z.string(),
+    updated: z.string().optional(),
     faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
   }),
 });

@@ -22,6 +22,7 @@ const moneyPage =
     : products.find((p) => p.key === d.product) ?? { name: 'Каталог', slug: '' };
 
 const isBeton = d.product === 'beton';
+const heroImg = isBeton ? '/img/beton.jpg' : d.product === 'shheben' ? '/img/og-default.jpg' : `/img/${d.product}.jpg`;
 const priceRows = isBeton
   ? beton.filter((x) => ['М200', 'М250', 'М300', 'М350'].includes(x.mark)).map((x) => ({ name: `Бетон ${x.mark}`, price: `${fmt(x.price)} ₸/м³` }))
   : products.map((p) => ({ name: p.name, price: `${fmt(p.price!)} ₸/т` }));
@@ -42,7 +43,9 @@ const schema = [
     headline: d.h1,
     description: d.description,
     datePublished: d.date,
-    dateModified: d.date,
+    dateModified: d.updated ?? d.date,
+    image: `https://inertka.kz${heroImg}`,
+    inLanguage: 'ru',
     author: { '@type': 'Organization', name: 'Инертка' },
     publisher: { '@id': 'https://inertka.kz/#org' },
     mainEntityOfPage: `https://inertka.kz/blog/${post.id}/`,
@@ -51,7 +54,7 @@ const schema = [
   ...(d.faq?.length ? [faqSchema(d.faq)] : []),
 ];
 ---
-<Base title={d.title} description={d.description} schema={schema}>
+<Base title={d.title} description={d.description} schema={schema} image={heroImg} type="article">
   <div class="wrap">
     <nav class="crumbs"><a href="/">Главная</a> › <a href="/blog/">Статьи</a></nav>
     <article class="prose">

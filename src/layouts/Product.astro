@@ -23,7 +23,7 @@ const posts = (await getCollection('blog')).filter(
 const schema = [productSchema(p, description), faqSchema(faq), crumbsSchema(crumbs)];
 const waText = `Здравствуйте! Нужна ${p.name.toLowerCase()}, объём: … т, адрес: …`;
 ---
-<Base title={title} description={description} schema={schema}>
+<Base title={title} description={description} schema={schema} image={p.img.replace('.webp', '.jpg')}>
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
@@ -45,6 +45,17 @@ const waText = `Здравствуйте! Нужна ${p.name.toLowerCase()}, о
     </div>
   </section>
   <div class="wrap">
+    <section class="facts" aria-label="Коротко">
+      <h2>Коротко: {p.name.toLowerCase()} в Астане</h2>
+      <dl>
+        <div><dt>Цена</dt><dd>{fmt(p.price!)} ₸ за тонну с НДС</dd></div>
+        <div><dt>Объём</dt><dd>любой, от 1 машины</dd></div>
+        <div><dt>Доставка</dt><dd>от {site.freeDeliveryFrom} т — бесплатно по Астане, до {site.freeDeliveryFrom} т — по расчёту</dd></div>
+        <div><dt>Оплата</dt><dd>перечислением, договор, счёт-фактура</dd></div>
+        <div><dt>Документы</dt><dd>сертификат, накладная на каждую машину</dd></div>
+        <div><dt>Для чего</dt><dd>{p.short}</dd></div>
+      </dl>
+    </section>
     <Trust />
     <div class="prose">
       <Calc selected={p.key} />

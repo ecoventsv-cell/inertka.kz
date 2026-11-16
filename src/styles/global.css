@@ -167,3 +167,10 @@ footer .cols { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit,
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* «Коротко» — ответ в первых строках страницы (для людей и для ИИ-поиска) */
+.facts { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin: 28px 0 0; }
+.facts h2 { margin: 0 0 12px; font-size: 1.15rem; }
+.facts dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px 24px; }
+.facts dt { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+.facts dd { margin: 2px 0 0; font-weight: 500; }

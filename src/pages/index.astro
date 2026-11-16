@@ -109,6 +109,19 @@ const faq = [
         какой щебень выбрать под задачу, как не ошибиться при заказе.
       </p>
     </div>
+    <h2>Полезные расчёты</h2>
+    <div class="grid">
+      {[
+        ['/blog/skolko-betona-na-fundament/', 'Сколько бетона нужно на фундамент', 'Лента, плита, столбы: формулы и цены'],
+        ['/blog/dresva-obratnaya-zasypka-raschet/', 'Сколько дресвы на обратную засыпку', 'Расчёт для дома и котлована'],
+        ['/blog/mashina-shhebnya-skolko-tonn/', 'Сколько тонн щебня в машине', 'КамАЗ, Howo, Shacman — тонны и цены'],
+        ['/blog/kakoj-beton-dlya-fundamenta/', 'Какой бетон нужен для фундамента', 'М250 или М300: таблица по постройкам'],
+        ['/blog/shheben-0-50-dlya-parkovki/', 'Парковка из щебня 0-50', 'Тонны и стоимость на 10–100 мест'],
+        ['/blog/podsypka-uchastka-dresvoj/', 'Подсыпка участка дресвой', 'Таблица на 6, 10 и 15 соток'],
+      ].map(([href, t, d]) => (
+        <a class="pcard" href={href}><div class="body"><h3>{t}</h3><p>{d}</p><span class="more">Читать →</span></div></a>
+      ))}
+    </div>
     <h2>Условия на дресву и щебень</h2>
     <ul class="terms">{terms.map((t) => <li>{t}</li>)}</ul>
     <div class="prose">
