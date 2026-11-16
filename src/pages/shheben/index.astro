@@ -5,6 +5,7 @@ import Faq from '../../components/Faq.astro';
 import Cta from '../../components/Cta.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Trust from '../../components/Trust.astro';
+import WhyPrice from '../../components/WhyPrice.astro';
 import { products, fmt, terms, waLink, site } from '../../data/site';
 import { faqSchema, crumbsSchema } from '../../data/schema';
 import { getCollection } from 'astro:content';
@@ -92,6 +93,7 @@ const posts = (await getCollection('blog')).filter((x) => x.data.product.startsW
         <li><b>Доставка</b><span>Самосвалы по графику, накладные и сертификат.</span></li>
       </ol>
       <p>Большой объём или поставки по графику — условия на странице <a href="/shheben/optom/">щебень оптом</a>.</p>
+      <WhyPrice />
       <Cta />
       <Faq items={faq} />
       {posts.length > 0 && (

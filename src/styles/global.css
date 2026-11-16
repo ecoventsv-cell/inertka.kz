@@ -174,3 +174,4 @@ footer .cols { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit,
 .facts dl { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px 24px; }
 .facts dt { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
 .facts dd { margin: 2px 0 0; font-weight: 500; }
+.why { margin: 2em 0; }
