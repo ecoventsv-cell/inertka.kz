@@ -1,7 +1,9 @@
 # Инертка — inertka.kz
 
-Astro, статика, Cloudflare Workers. Деплой: пуш в `main` → `.github/workflows/deploy.yml`
-(деплой идёт, только когда в репозитории заданы секреты Cloudflare).
+Astro, статика, Cloudflare Workers. **Сайт запущен 16.11.2026.** Деплой: пуш в `main` →
+Cloudflare Workers Builds (воркер `inertka-kz`, аккаунт Bekcapital) собирает и выкладывает сам.
+GitHub Action только собирает и проверяет. Домен на NS Cloudflare (ezra/laila), регистратор hoster.kz.
+После выкладки: проверить страницы curl'ом и `npm run indexnow` (в Builds он не настроен).
 
 ## Цель
 
@@ -50,7 +52,6 @@ qurylys-beton.kz (единственный с блогом); инертные �
 - `public/llms.txt` — справка о компании и ценах для ChatGPT, Claude, Perplexity. При смене цен править и его.
 - `robots.txt` открыт для поисковиков и ИИ-ботов. Sitemap: `/sitemap-index.xml`.
 - IndexNow (Яндекс, Bing): ключ-файл в `public/`, отправка — `npm run indexnow` после выкладки.
-  В Cloudflare Workers Builds команда деплоя: `npx wrangler deploy && npm run indexnow`.
 - Коды Search Console и Вебмастера вставлять в `site.googleVerify` / `site.yandexVerify` (`src/data/site.ts`).
 
 Топ-5 конкурентов по Астане (16.11.2026): abk-beton.kz, qurylys-beton.kz, avers.kz (бетон),
