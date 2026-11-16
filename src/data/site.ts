@@ -14,7 +14,7 @@ export const site = {
   freeDeliveryFrom: 100, // тонн
   // Коды подтверждения Search Console и Яндекс Вебмастера (content из meta-тега).
   googleVerify: '',
-  yandexVerify: '',
+  yandexVerify: '04d47293401b3efb',
 };
 
 export function waLink(text = 'Здравствуйте! Хочу заказать инертные материалы.') {
