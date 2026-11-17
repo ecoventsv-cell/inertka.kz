@@ -14,6 +14,22 @@ export function faqSchema(items: { q: string; a: string }[]) {
   };
 }
 
+// Доставка по Астане обычно в день заказа; возврат не предусмотрен (решение владельца 17.11.2026).
+export const shippingDetails = {
+  '@type': 'OfferShippingDetails',
+  shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'KZ', addressRegion: 'Астана' },
+  deliveryTime: {
+    '@type': 'ShippingDeliveryTime',
+    handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 0, unitCode: 'DAY' },
+    transitTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 1, unitCode: 'DAY' },
+  },
+};
+export const returnPolicy = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: 'KZ',
+  returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+};
+
 export function productSchema(p: Product, description: string) {
   return {
     '@context': 'https://schema.org',
@@ -32,6 +48,8 @@ export function productSchema(p: Product, description: string) {
       priceValidUntil: '2027-06-30',
       url: `${site.url}/${p.slug}/`,
       seller: { '@id': `${site.url}/#org` },
+      shippingDetails,
+      hasMerchantReturnPolicy: returnPolicy,
       priceSpecification: {
         '@type': 'UnitPriceSpecification',
         price: p.price,

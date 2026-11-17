@@ -6,7 +6,7 @@ import Cta from '../../components/Cta.astro';
 import Trust from '../../components/Trust.astro';
 import { markPages, type MarkPage } from '../../data/marks';
 import { beton, betonDelivery, sulfatePlus, site, waLink, fmt } from '../../data/site';
-import { faqSchema, crumbsSchema } from '../../data/schema';
+import { faqSchema, crumbsSchema, shippingDetails, returnPolicy } from '../../data/schema';
 
 export function getStaticPaths() {
   return markPages.map((m) => ({ params: { mark: m.slug }, props: { m } }));
@@ -38,6 +38,8 @@ const product = {
       priceValidUntil: '2027-06-30',
     url: `${site.url}/beton/${m.slug}/`,
     seller: { '@id': `${site.url}/#org` },
+    shippingDetails,
+    hasMerchantReturnPolicy: returnPolicy,
   },
 };
 const others = markPages.filter((x) => x.slug !== m.slug);
