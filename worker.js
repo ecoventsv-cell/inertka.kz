@@ -1,8 +1,10 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.hostname === 'www.inertka.kz') {
+    // Один главный адрес: https и без www.
+    if (url.hostname === 'www.inertka.kz' || url.protocol === 'http:') {
       url.hostname = 'inertka.kz';
+      url.protocol = 'https:';
       return Response.redirect(url.toString(), 301);
     }
     // Адреса страниц без слеша на конце — 301 на версию со слешем.
